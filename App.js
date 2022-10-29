@@ -10,29 +10,53 @@ import AdditionalCost from './classes/AdditionalCost';
 
 // Mock data
 const passengerArr = [
-  new Passenger("Wiktor", 150),
-  new Passenger("Marcin", 400),
+  new Passenger("Wiktor", 500),
+  new Passenger("Marcin", 500),
   new Passenger("Karol", 500),
-  new Passenger("Kuba", 200),
-  new Passenger("Kacper", 350)
+  new Passenger("Kuba", 500),
+  new Passenger("Kacper", 500)
 ]
 
-passengerArr[0].additionalCosts = [ new AdditionalCost('Autostrada', 3.0), new AdditionalCost('Parking', 4.0)]
-passengerArr[1].additionalCosts = [ new AdditionalCost('Autostrada', 3.0)]
-passengerArr[2].additionalCosts = [ new AdditionalCost('Autostrada', 3.0), new AdditionalCost('Parking', 4.0)]
-passengerArr[3].additionalCosts = [ new AdditionalCost('Autostrada', 3.0)]
-passengerArr[4].additionalCosts = [ new AdditionalCost('Autostrada', 3.0), new AdditionalCost('Parking', 4.0)]
+passengerArr[0].additionalCosts = [ new AdditionalCost('Autostrada', 3.0), new AdditionalCost('Parking', 4.0)];
+passengerArr[1].additionalCosts = [ new AdditionalCost('Autostrada', 3.0)];
+passengerArr[2].additionalCosts = [ new AdditionalCost('Autostrada', 3.0), new AdditionalCost('Parking', 4.0)];
+passengerArr[3].additionalCosts = [ new AdditionalCost('Autostrada', 3.0)];
+passengerArr[4].additionalCosts = [ new AdditionalCost('Autostrada', 3.0), new AdditionalCost('Parking', 4.0)];
 
-const mileageSum = passengerArr.reduce((sum, passenger) => sum + passenger.mileage, 0);
-passengerArr.forEach((passenger) => passenger.calculateFuelCost(7.9 * (passenger.mileage/mileageSum), 11))
 
 export default function App() {
 
-  const [currentView, setCurrentView] = useState(POSSIBLE_VIEWS.RESULT);
+  const [currentView, setCurrentView] = useState(POSSIBLE_VIEWS.MAIN);
+  const [totalDistance, setTotalDistance] = useState(500);
   const [passengers, setPassengers] = useState(passengerArr);
-
+  const [fuelPrice, setFuelPrice] = useState(6.0);
+  const [combustion, setCombustion] = useState(10.0);
+  
   function toggleView(){
     setCurrentView((currentView) => currentView === POSSIBLE_VIEWS.MAIN ? POSSIBLE_VIEWS.RESULT : POSSIBLE_VIEWS.MAIN);
+
+    if(currentView === POSSIBLE_VIEWS.RESULT){
+      // Calculate fuel costs for each person
+      calculateFuelCosts(passengers);
+    }
+  }
+
+  function calculateFuelCosts(passengers){
+    passengers
+        .sort((a, b) => a.mileage - b.mileage)
+        .reduce(([prevFuelCost, prevMileage], passenger, index, arr) => {
+
+          if(prevMileage === passenger.mileage){
+            passenger.fuelCost = prevFuelCost;
+          }
+          else{
+            const nextIntervalPrice = (passenger.mileage - prevMileage)*(fuelPrice*combustion/100);
+            const remainingPassengers = (arr.length - index);
+            passenger.fuelCost = prevFuelCost + nextIntervalPrice/remainingPassengers;
+          }
+          return [passenger.fuelCost, passenger.mileage]
+
+        }, [0, 0]);
   }
 
   return (
