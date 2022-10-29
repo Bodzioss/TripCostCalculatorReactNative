@@ -12,10 +12,6 @@ class Passenger{
     addAdditionalCost(name, price){
       this.additionalCosts.push(new AdditionalCost(name, price));
     }
-
-    calculateFuelCost(fuelPrice, combustion){
-      this.fuelCost = this.mileage ? this.mileage *  (fuelPrice * combustion / 100) : 0;
-    }
 }
 
 export default Passenger;
