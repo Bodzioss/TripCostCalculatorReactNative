@@ -10,10 +10,10 @@ import AdditionalCost from './classes/AdditionalCost';
 
 // Mock data
 const passengerArr = [
-  new Passenger("Wiktor", 500),
-  new Passenger("Marcin", 500),
-  new Passenger("Karol", 500),
-  new Passenger("Kuba", 500),
+  new Passenger("Wiktor", 200),
+  new Passenger("Marcin", 300),
+  new Passenger("Karol", 150),
+  new Passenger("Kuba", 400),
   new Passenger("Kacper", 500)
 ]
 
@@ -33,12 +33,11 @@ export default function App() {
   const [combustion, setCombustion] = useState(10.0);
   
   function toggleView(){
-    setCurrentView((currentView) => currentView === POSSIBLE_VIEWS.MAIN ? POSSIBLE_VIEWS.RESULT : POSSIBLE_VIEWS.MAIN);
-
-    if(currentView === POSSIBLE_VIEWS.RESULT){
+    if(currentView !== POSSIBLE_VIEWS.RESULT){
       // Calculate fuel costs for each person
       calculateFuelCosts(passengers);
     }
+    setCurrentView((currentView) => currentView === POSSIBLE_VIEWS.MAIN ? POSSIBLE_VIEWS.RESULT : POSSIBLE_VIEWS.MAIN);
   }
 
   function calculateFuelCosts(passengers){
