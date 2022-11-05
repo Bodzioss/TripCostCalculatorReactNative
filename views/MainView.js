@@ -1,117 +1,210 @@
 import React, {useState} from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TouchableOpacity, View, TextInput, Keyboard } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, TextInput, Keyboard, ScrollView } from 'react-native';
 import ExtraCost from '../components/ExtraCost';
-import Passenger from '../components/Passenger';
+import Passenger from '../classes/Passenger';
+import AdditionalCost from '../classes/AdditionalCost';
+import Checkbox from 'expo-checkbox';
 
-function MainView(){
+function MainView({passengers, setPassengers, fuelPrice, setFuelPrice, combustion, setCombustion}){
+      const [passengerName,setPassengerName] = useState();
+      const [passengerDistance,setPassengerDistance] = useState();
 
-    const [passenger, setPassenger] = useState({
-        name: '',
-        distance: ''
-      });
-    
-      //const [passenger, setPassenger] = useState();
-      const [passengerItems, setPassengerItems] = useState([]);
-    
+      const [additionalCostName,setAdditionalCostName] = useState();
+      const [additionalCostPrice,setAdditionalCostPrice] = useState();
+      const [additionalCosts, setAdditionalCosts] = useState([]);
+
+      const [isChecked, setChecked] = useState();
+
       const handleAddPassenger = () => {
         Keyboard.dismiss();
-        console.log(passenger)
-        setPassengerItems([...passengerItems, passenger])
+        setPassengers([...passengers, new Passenger(passengerName, passengerDistance)])
+        setPassengerName('');
+        setPassengerDistance('');
       }
 
-      const [extraCost, setExtraCost] = useState();
-      const [extraCostItems, setExtraCostItems] = useState([]);
+     
     
-      const handleAddExtraCost = () => {
+      const handleAddAdditionalCosts = () => {
         Keyboard.dismiss();
-        console.log(extraCost)
-        setExtraCostItems([...extraCostItems, extraCost])
-        setExtraCost(null)
+        console.log(additionalCostName);
+        setAdditionalCosts([...additionalCosts, new AdditionalCost(additionalCostName,additionalCostPrice)]);
       }
+
+      const removePassenger = (index) =>{
+        let passengersCopy = [...passengers];
+        passengersCopy.splice(index, 1);
+        setPassengers(passengersCopy);
+      }
+
+      
+      const removeAdditionalCost = (index) =>{
+        let additionalCostCopy = [...additionalCosts];
+        additionalCostCopy.splice(index, 1);
+        setAdditionalCosts(additionalCostCopy);
+      }
+
+      const addAdditionalCost = (index,passengerIndex) =>{
+        let additionalCost = additionalCosts[index];
+        let passenger = passengers[passengerIndex];
+        if (isChecked === true){
+          passengers[passengerIndex].addAdditionalCost(additionalCost.name,additionalCost.price);
+          console.log(isChecked);
+          setChecked(false);
+          console.log(isChecked);
+        }
+        else{
+          console.log(isChecked);
+          setChecked(true);
+          console.log(isChecked);
+        }
+      }
+
       return (
         <View style={styles.container}>
-          <View style={styles.topView}>
-            {/*App name*/}
-    
-    
-            {/*Dodawanie wartości spalania*/}
-            <View style={styles.dataInputSection}>
-              <Text style={styles.sectionTitle}>Całkowita pokonana trasa:</Text>
-              <View style={styles.dataInputSectionRight}>
-                <TextInput style={styles.input} placeholder={'0'} keyboardType = 'numeric'  />
-                <Text style={styles.unit}>km</Text>
-              </View>
-            </View>
-    
-    
-            {/*Dodawanie pasażerów*/}
-            <View style={styles.passengerSection}>
-              <Text style={styles.sectionTitle}>Pasażerowie</Text>
-              <View style={styles.passengers}>
-              <View style={styles.item}>
-                <View style={styles.itemLeft}>
-                    <TextInput style={styles.passengerName} placeholder={'Imie'} value = {passenger.name} onChangeText={text => setPassenger({name:text,distance:90})}></TextInput>
+          <ScrollView>
+            <View style={styles.topView}>
+              {/*App name*/}
+      
+      
+              {/* Dodawanie wartości spalania
+              <View style={styles.dataInputSection}>
+                <Text style={styles.sectionTitle}>Całkowita pokonana trasa:</Text>
+                <View style={styles.dataInputSectionRight}>
+                  <TextInput style={styles.input} placeholder={'0'} keyboardType = 'numeric' value = {totalDistance} onChangeText={(totalDistance) => setPassengerName(setTotalDistance)} />
+                  <Text style={styles.unit}>km</Text>
                 </View>
-                <View style={styles.itemRight}>
-                    <TextInput style={styles.distanceInput} placeholder={'0'} keyboardType = 'numeric'  value = {passenger.distance} onChangeText={text => setPassenger({name:'dsaf',distance:90})}></TextInput>
-                    <Text style={styles.passengerName}>km</Text>
-                    <TouchableOpacity style={styles.addPassengerButton} onPress={()=> handleAddPassenger()}>
-                      <Ionicons name="add-outline" size={20} ></Ionicons>
-                    </TouchableOpacity>
-                </View>
-            </View>
-               {
-                  passengerItems.map((passenger, index) => {
-                    return <Passenger key={index} text={passenger.distance}/>
-                  })
-               }
-              </View>
-            </View>
-    
-            {/*Dodawanie ceny paliwa*/}
-            <View style={styles.dataInputSection}>
-              <Text style={styles.sectionTitle}>Cena paliwa:</Text>
-              <View style={styles.dataInputSectionRight}>
-                <TextInput style={styles.input} placeholder={'0'} keyboardType = 'numeric'></TextInput>
-                <Text style={styles.unit}>zł</Text>
-              </View>
-            </View>
-    
-            {/*Dodawanie wartości spalania*/}
-            <View style={styles.dataInputSection}>
-              <Text style={styles.sectionTitle}>Spalanie:</Text>
-              <View style={styles.dataInputSectionRight}>
-                <TextInput style={styles.input} placeholder={'0'} keyboardType = 'numeric'></TextInput>
-                <Text style={styles.unit}>l/100km</Text>
-              </View>
-            </View>
-    
-            {/*Dodawanie kosztów dodatkowych*/}
-            <View style={styles.extraCostSection}>
-            <Text style={styles.sectionTitle}>Koszty dodatkowe</Text>
-              <View style={styles.passengers}>
+              </View> */}
+      
+      
+              {/*Dodawanie pasażerów*/}
+              <View style={styles.passengerSection}>
+                <Text style={styles.sectionTitle}>Pasażerowie</Text>
+                <View style={styles.passengers}>
                 <View style={styles.item}>
-                  <View style={styles.itemLeft}>
-                      <TextInput style={styles.costName} value = {extraCost} onChangeText={text => setExtraCost(text)}></TextInput>
+                      <View style={styles.itemLeft}>
+                      <TextInput style={styles.passengerName} placeholder={'Imie'} value = {passengerName} onChangeText={(passengerName) => setPassengerName(passengerName)}/>
+                      </View>
+                      <View style={styles.itemRight}>
+                      <TextInput style={styles.passengerName} placeholder={'0'} keyboardType = 'numeric'  value = {passengerDistance} onChangeText={(passengerDistance) => setPassengerDistance(passengerDistance)}></TextInput>
+                      <Text style={styles.passengerName}>km</Text>
+                        <TouchableOpacity style={styles.addPassengerButton} onPress={()=> handleAddPassenger()}>
+                          <Ionicons name="add-outline" size={20} ></Ionicons>
+                        </TouchableOpacity>
+                      </View>
                   </View>
-                  <View style={styles.itemRight}>
-                      <TextInput style={styles.costInput} placeholder={'0'} keyboardType = 'numeric'></TextInput>
-                      <Text style={styles.costName}>zł</Text>
-                      <TouchableOpacity style={styles.addExtraCostButton}>
-                        <Ionicons name="add-outline" size={20}></Ionicons>
-                      </TouchableOpacity>
-                  </View>
-                </View>
                 {
-                  extraCostItems.map((extraCost, index) => {
-                    return <ExtraCost key={index} text={extraCost}/>
-                  })
+                   passengers.map((passenger, index) => {
+                      return( 
+                      <View style={styles.item}>
+                      <View style={styles.itemLeft}>
+                          <Text style={styles.passengerName}>{passenger.name}</Text>
+                      </View>
+                      <View style={styles.itemRight}>
+                          <Text style={styles.passengerName}>{passenger.mileage} km</Text>
+                          <TouchableOpacity 
+                           key={index}  
+                           onPress={() => removePassenger(index)}>
+                            <Ionicons name="close-outline"></Ionicons>
+                          </TouchableOpacity>
+                      </View>
+                  </View>)
+                    })
                 }
+                </View>
+              </View>
+      
+              {/*Dodawanie ceny paliwa*/}
+              <View style={styles.dataInputSection}>
+                <Text style={styles.sectionTitle}>Cena paliwa:</Text>
+                <View style={styles.dataInputSectionRight}>
+                  <TextInput style={styles.input} 
+                    placeholder={'0'} 
+                    keyboardType = 'numeric' 
+                    value = {fuelPrice} 
+                    onChangeText={(fuelPrice) => setFuelPrice(fuelPrice)}/>
+                  <Text style={styles.unit}>zł</Text>
+                </View>
+              </View>
+      
+              {/*Dodawanie wartości spalania*/}
+              <View style={styles.dataInputSection}>
+                <Text style={styles.sectionTitle}>Spalanie:</Text>
+                <View style={styles.dataInputSectionRight}>
+                  <TextInput style={styles.input} 
+                    placeholder={'0'} 
+                    keyboardType = 'numeric' 
+                    value = {combustion} 
+                    onChangeText={(combustion) => setCombustion(combustion)}/>
+                  <Text style={styles.unit}>l/100km</Text>
+                </View>
+              </View>
+      
+              {/*Dodawanie kosztów dodatkowych*/}
+              <View style={styles.extraCostSection}>
+              <Text style={styles.sectionTitle}>Koszty dodatkowe</Text>
+                <View style={styles.passengers}>
+                  <View style={styles.item}>
+                    <View style={styles.itemLeft}>
+                        <TextInput style={styles.costName} 
+                          placeholder={'Nazwa kosztu dodatkowego'} 
+                          value = {additionalCostName} 
+                          onChangeText={additionalCostName => setAdditionalCostName(additionalCostName)}/>
+                    </View>
+                    <View style={styles.itemRight}>
+                        <TextInput style={styles.costInput} 
+                          placeholder={'0'} 
+                          keyboardType = 'numeric' 
+                          value = {additionalCostPrice} 
+                          onChangeText={additionalCostPrice => setAdditionalCostPrice(additionalCostPrice)}/>
+                        <Text style={styles.costName}>zł</Text>
+                        <TouchableOpacity 
+                          style={styles.addExtraCostButton} 
+                          onPress={()=> handleAddAdditionalCosts()}>
+                          <Ionicons name="add-outline" size={20}></Ionicons>
+                        </TouchableOpacity>
+                    </View>
+                  </View>
+                  {
+                    additionalCosts.map((additionalCost, index) => {
+                      return (
+                      <View style={styles.itemDivided}>
+                        <View style={styles.itemTop}>
+                          <View style={styles.itemLeft}>
+                              <Text style={styles.costName}>{additionalCost.name}</Text>
+                          </View>
+                          <View style={styles.itemRight}>
+                              <Text style={styles.costName}>{additionalCost.price} zł</Text>
+                              <TouchableOpacity key={index}  onPress={() => removeAdditionalCost(index)}>
+                                <Ionicons name="close-outline"></Ionicons>
+                              </TouchableOpacity>
+                          </View>
+                        </View>
+                        <View style={styles.itemBottom}>
+                        {
+                          passengers.map((passenger, passengerIndex) => {
+                              return(
+                                <View style={styles.checkbox} key={passengerIndex}> 
+                                  <Text>{passenger.name.substring(0,1)} </Text>
+                                  <Checkbox key={index + passengerIndex}
+                                    value={isChecked}
+                                    onValueChange={(isChecked) => addAdditionalCost(index,passengerIndex,isChecked)}
+                                    color={isChecked ? '#4630EB' : undefined}
+                                  />
+                                </View>
+                                  )
+                            })
+                          }
+                        </View>
+                      </View>
+                      )
+                    })
+                  }
+                </View>
               </View>
             </View>
-          </View>
+          </ScrollView>
         </View>
       );
     }
@@ -120,14 +213,14 @@ function MainView(){
       container: {
         flex: 1,
         backgroundColor: '#E8EAED',
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingBottom: 50,
         justifyContent: 'center',
         alignItems: 'center',
       },
       topView: {
-    
+        paddingTop: 30,
+        paddingRight: 15,
+        paddingLeft: 15,
+        paddingBottom: 20,
       },
       bottomView: {
         backgroundColor:'#fff',
@@ -199,6 +292,17 @@ function MainView(){
         justifyContent: 'space-between',
         marginBottom: 10,
     },
+    itemDivided:{
+      backgroundColor: '#FFF',
+      padding: 10,
+      borderRadius: 10,
+      marginBottom: 10,
+  },
+    itemTop:{
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
     itemLeft:{
         flexDirection: 'row',
         alignItems: 'center',
@@ -207,8 +311,18 @@ function MainView(){
     itemRight:{
         flexDirection: 'row',
         alignItems: 'center',
-        flexWrap: 'wrap',
+        flexWrap: 'wrap',  
     },
+    itemBottom:{
+      flexDirection:'row',
+      flexWrap:'wrap',
+      paddingTop: 10,
+      justifyContent: 'space-between',
+  },
+  checkbox:{
+    alignItems:'center',
+    paddingRight: 15,
+},
     costName: {
       paddingRight: 20,
     },

@@ -70,7 +70,7 @@ export default function App() {
           <TopBar />
 
           {/* Changing content */}
-          {currentView === POSSIBLE_VIEWS.MAIN ? <MainView /> : <ResultView passengers={passengers}/>}
+          {currentView === POSSIBLE_VIEWS.MAIN ? <MainView passengers={passengers} setPassengers={setPassengers} fuelPrice={fuelPrice} setFuelPrice={setFuelPrice} combustion={combustion} setCombustion={setCombustion}/> : <ResultView passengers={passengers}/>}
 
           {/* Toggle view button*/}
           <Button
