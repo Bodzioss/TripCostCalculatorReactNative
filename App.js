@@ -27,7 +27,6 @@ passengerArr[4].additionalCosts = [ new AdditionalCost('Autostrada', 3.0), new A
 export default function App() {
 
   const [currentView, setCurrentView] = useState(POSSIBLE_VIEWS.MAIN);
-  const [totalDistance, setTotalDistance] = useState(500);
   const [passengers, setPassengers] = useState(passengerArr);
   const [fuelPrice, setFuelPrice] = useState(6.0);
   const [combustion, setCombustion] = useState(10.0);

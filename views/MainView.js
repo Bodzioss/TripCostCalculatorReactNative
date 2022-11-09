@@ -1,11 +1,8 @@
 import React, {useState} from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, TouchableOpacity, View, TextInput, Keyboard, ScrollView } from 'react-native';
-import ExtraCost from '../components/ExtraCost';
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, Keyboard, ScrollView } from 'react-native';
 import Passenger from '../classes/Passenger';
 import AdditionalCost from '../classes/AdditionalCost';
-import Checkbox from 'expo-checkbox';
 
 function MainView({passengers, setPassengers, fuelPrice, setFuelPrice, combustion, setCombustion}){
       const [passengerName,setPassengerName] = useState();
@@ -14,8 +11,6 @@ function MainView({passengers, setPassengers, fuelPrice, setFuelPrice, combustio
       const [additionalCostName,setAdditionalCostName] = useState();
       const [additionalCostPrice,setAdditionalCostPrice] = useState();
       const [additionalCosts, setAdditionalCosts] = useState([]);
-
-      const [isChecked, setChecked] = useState();
 
       const handleAddPassenger = () => {
         Keyboard.dismiss();
@@ -28,8 +23,10 @@ function MainView({passengers, setPassengers, fuelPrice, setFuelPrice, combustio
     
       const handleAddAdditionalCosts = () => {
         Keyboard.dismiss();
-        console.log(additionalCostName);
         setAdditionalCosts([...additionalCosts, new AdditionalCost(additionalCostName,additionalCostPrice)]);
+        passengers.map((passenger) => {
+          passenger.addAdditionalCost(new AdditionalCost(additionalCostName, additionalCostPrice));
+        })
       }
 
       const removePassenger = (index) =>{
@@ -43,22 +40,6 @@ function MainView({passengers, setPassengers, fuelPrice, setFuelPrice, combustio
         let additionalCostCopy = [...additionalCosts];
         additionalCostCopy.splice(index, 1);
         setAdditionalCosts(additionalCostCopy);
-      }
-
-      const addAdditionalCost = (index,passengerIndex) =>{
-        let additionalCost = additionalCosts[index];
-        let passenger = passengers[passengerIndex];
-        if (isChecked === true){
-          passengers[passengerIndex].addAdditionalCost(additionalCost.name,additionalCost.price);
-          console.log(isChecked);
-          setChecked(false);
-          console.log(isChecked);
-        }
-        else{
-          console.log(isChecked);
-          setChecked(true);
-          console.log(isChecked);
-        }
       }
 
       return (
@@ -169,34 +150,16 @@ function MainView({passengers, setPassengers, fuelPrice, setFuelPrice, combustio
                   {
                     additionalCosts.map((additionalCost, index) => {
                       return (
-                      <View style={styles.itemDivided}>
-                        <View style={styles.itemTop}>
+                        <View style={styles.item}>
                           <View style={styles.itemLeft}>
-                              <Text style={styles.costName}>{additionalCost.name}</Text>
+                              <Text style={styles.passengerName}>{additionalCost.name}</Text>
                           </View>
                           <View style={styles.itemRight}>
-                              <Text style={styles.costName}>{additionalCost.price} zł</Text>
+                              <Text style={styles.passengerName}>{additionalCost.price} zł</Text>
                               <TouchableOpacity key={index}  onPress={() => removeAdditionalCost(index)}>
                                 <Ionicons name="close-outline"></Ionicons>
                               </TouchableOpacity>
                           </View>
-                        </View>
-                        <View style={styles.itemBottom}>
-                        {
-                          passengers.map((passenger, passengerIndex) => {
-                              return(
-                                <View style={styles.checkbox} key={passengerIndex}> 
-                                  <Text>{passenger.name.substring(0,1)} </Text>
-                                  <Checkbox key={index + passengerIndex}
-                                    value={isChecked}
-                                    onValueChange={(isChecked) => addAdditionalCost(index,passengerIndex,isChecked)}
-                                    color={isChecked ? '#4630EB' : undefined}
-                                  />
-                                </View>
-                                  )
-                            })
-                          }
-                        </View>
                       </View>
                       )
                     })
