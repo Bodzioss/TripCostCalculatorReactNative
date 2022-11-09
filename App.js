@@ -2,12 +2,11 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, View, Button} from 'react-native';
 import TopBar from './shared/TopBar';
-import MainView from './views/MainView';
+import MainView from './views/MainView/MainView';
 import ResultView from './views/ResultView/ResultView';
 import { POSSIBLE_VIEWS } from './constants/AppConstants';
-import Passenger  from './classes/Passenger';
-import AdditionalCost from './classes/AdditionalCost';
 
+/*
 // Mock data
 const passengerArr = [
   new Passenger("Wiktor", 200),
@@ -22,12 +21,12 @@ passengerArr[1].additionalCosts = [ new AdditionalCost('Autostrada', 3.0)];
 passengerArr[2].additionalCosts = [ new AdditionalCost('Autostrada', 3.0), new AdditionalCost('Parking', 4.0)];
 passengerArr[3].additionalCosts = [ new AdditionalCost('Autostrada', 3.0)];
 passengerArr[4].additionalCosts = [ new AdditionalCost('Autostrada', 3.0), new AdditionalCost('Parking', 4.0)];
-
+*/
 
 export default function App() {
 
   const [currentView, setCurrentView] = useState(POSSIBLE_VIEWS.MAIN);
-  const [passengers, setPassengers] = useState(passengerArr);
+  const [passengers, setPassengers] = useState([]);
   const [fuelPrice, setFuelPrice] = useState(6.0);
   const [combustion, setCombustion] = useState(10.0);
   
