@@ -5,6 +5,8 @@ import TopBar from './shared/TopBar';
 import MainView from './views/MainView/MainView';
 import ResultView from './views/ResultView/ResultView';
 import { POSSIBLE_VIEWS } from './constants/AppConstants';
+import Passenger from './classes/Passenger';
+import AdditionalCost from './classes/AdditionalCost';
 
 /*
 // Mock data
@@ -27,15 +29,29 @@ export default function App() {
 
   const [currentView, setCurrentView] = useState(POSSIBLE_VIEWS.MAIN);
   const [passengers, setPassengers] = useState([]);
-  const [fuelPrice, setFuelPrice] = useState(6.0);
-  const [combustion, setCombustion] = useState(10.0);
+  const [fuelPrice, setFuelPrice] = useState(0);
+  const [combustion, setCombustion] = useState(0);
+  const [additionalCosts, setAdditionalCosts] = useState([]);  
   
   function toggleView(){
     if(currentView !== POSSIBLE_VIEWS.RESULT){
       // Calculate fuel costs for each person
       calculateFuelCosts(passengers);
+      calculateAdditionalCosts(passengers, additionalCosts);
     }
     setCurrentView((currentView) => currentView === POSSIBLE_VIEWS.MAIN ? POSSIBLE_VIEWS.RESULT : POSSIBLE_VIEWS.MAIN);
+  }
+
+  function calculateAdditionalCosts(passengers,additionalCosts){
+    let additionsCostsTmp = additionalCosts;
+    additionsCostsTmp.map((additionsCostTmp => {
+      additionsCostTmp.price = additionsCostTmp.price / passengers.length;
+    }))
+
+    passengers.map(passenger =>{
+      passenger.additionalCosts = additionsCostsTmp;
+    })
+    
   }
 
   function calculateFuelCosts(passengers){
@@ -68,7 +84,14 @@ export default function App() {
           <TopBar />
 
           {/* Changing content */}
-          {currentView === POSSIBLE_VIEWS.MAIN ? <MainView passengers={passengers} setPassengers={setPassengers} fuelPrice={fuelPrice} setFuelPrice={setFuelPrice} combustion={combustion} setCombustion={setCombustion}/> : <ResultView passengers={passengers}/>}
+          {currentView === POSSIBLE_VIEWS.MAIN ? <MainView passengers={passengers} 
+                                                  setPassengers={setPassengers} 
+                                                  fuelPrice={fuelPrice} 
+                                                  setFuelPrice={setFuelPrice} 
+                                                  combustion={combustion} 
+                                                  setCombustion={setCombustion} 
+                                                  additionalCosts={additionalCosts} 
+                                                  setAdditionalCosts={setAdditionalCosts}/> : <ResultView passengers={passengers}/>}
 
           {/* Toggle view button*/}
           <Button

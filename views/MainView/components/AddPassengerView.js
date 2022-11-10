@@ -3,11 +3,11 @@ import { Ionicons } from '@expo/vector-icons';
 import Passenger from '../../../classes/Passenger';
 
 
-function AddPassengerView({passengers,setPassengers,passengerName,setPassengerName,passengerDistance,setPassengerDistance}){
+function AddPassengerView({passengers,setPassengers,passengerName,setPassengerName,passengerDistance,setPassengerDistance, additionalCosts}){
 
     const handleAddPassenger = () => {
         Keyboard.dismiss();
-        if(passengerName != '' && passengerDistance > 0){
+        if(passengerName != '' && passengerDistance > 0){  
             setPassengers([...passengers, new Passenger(passengerName, passengerDistance)])
             setPassengerName('');
             setPassengerDistance(0);
@@ -39,7 +39,7 @@ function AddPassengerView({passengers,setPassengers,passengerName,setPassengerNa
         {
            passengers.map((passenger, index) => {
               return( 
-              <View style={styles.item}>
+              <View key={index} style={styles.item}>
               <View style={styles.itemLeft}>
                   <Text style={styles.passengerName}>{passenger.name}</Text>
               </View>

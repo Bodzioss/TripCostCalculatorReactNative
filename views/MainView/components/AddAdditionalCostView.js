@@ -3,8 +3,6 @@ import { Ionicons } from '@expo/vector-icons';
 import AdditionalCost from '../../../classes/AdditionalCost';
 
 
-
-
 function AddAdditionalCostView({passengers, additionalCosts, setAdditionalCosts, additionalCostName, 
     setAdditionalCostName, additionalCostPrice, setAdditionalCostPrice}){
 
@@ -12,9 +10,6 @@ function AddAdditionalCostView({passengers, additionalCosts, setAdditionalCosts,
         Keyboard.dismiss();
         if(additionalCostName != '' && additionalCostPrice > 0){
             setAdditionalCosts([...additionalCosts, new AdditionalCost(additionalCostName,additionalCostPrice)]);
-            passengers.map((passenger) => {
-                passenger.addAdditionalCost(new AdditionalCost(additionalCostName, additionalCostPrice));
-            })
             setAdditionalCostName('');
             setAdditionalCostPrice(0);
         }
@@ -54,7 +49,7 @@ function AddAdditionalCostView({passengers, additionalCosts, setAdditionalCosts,
             {
               additionalCosts.map((additionalCost, index) => {
                 return (
-                  <View style={styles.item}>
+                  <View key={index} style={styles.item}>
                     <View style={styles.itemLeft}>
                         <Text style={styles.passengerName}>{additionalCost.name}</Text>
                     </View>

@@ -3,14 +3,12 @@ import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import AddAdditionalCostView from './components/AddAdditionalCostView';
 import AddPassengerView from './components/AddPassengerView';
 
-function MainView({passengers, setPassengers, fuelPrice, setFuelPrice, combustion, setCombustion}){
+function MainView({passengers, setPassengers, fuelPrice, setFuelPrice, combustion, setCombustion, additionalCosts, setAdditionalCosts}){
       const [passengerName,setPassengerName] = useState('');
       const [passengerDistance,setPassengerDistance] = useState(0);
 
       const [additionalCostName,setAdditionalCostName] = useState('');
       const [additionalCostPrice,setAdditionalCostPrice] = useState(0);
-      const [additionalCosts, setAdditionalCosts] = useState([]);
-
 
     
       return (
