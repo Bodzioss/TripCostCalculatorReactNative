@@ -43,7 +43,7 @@ export default function App() {
   }
 
   function calculateAdditionalCosts(passengers,additionalCosts){
-    let additionsCostsTmp = additionalCosts;
+    let additionsCostsTmp = JSON.parse(JSON.stringify(additionalCosts));
     additionsCostsTmp.map((additionsCostTmp => {
       additionsCostTmp.price = additionsCostTmp.price / passengers.length;
     }))
