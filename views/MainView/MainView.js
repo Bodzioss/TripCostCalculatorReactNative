@@ -108,6 +108,7 @@ const styles = StyleSheet.create({
       paddingBottom: 5,
       paddingRight: 20,
       width: '60%',
+      textAlign: 'right'
     },
 
     dataInputSection:{

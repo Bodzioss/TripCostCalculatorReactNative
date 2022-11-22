@@ -48,7 +48,7 @@ function AddPassengerView({passengers,setPassengers,passengerName,setPassengerNa
                   <TouchableOpacity 
                    key={index}  
                    onPress={() => removePassenger(index)}>
-                    <Ionicons name="close-outline"></Ionicons>
+                    <Ionicons name="close-outline" size={20}></Ionicons>
                   </TouchableOpacity>
               </View>
           </View>)

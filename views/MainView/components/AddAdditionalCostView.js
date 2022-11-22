@@ -56,7 +56,7 @@ function AddAdditionalCostView({passengers, additionalCosts, setAdditionalCosts,
                     <View style={styles.itemRight}>
                         <Text style={styles.passengerName}>{additionalCost.price} zł</Text>
                         <TouchableOpacity key={index}  onPress={() => removeAdditionalCost(index)}>
-                          <Ionicons name="close-outline"></Ionicons>
+                          <Ionicons name="close-outline" size={20}></Ionicons>
                         </TouchableOpacity>
                     </View>
                 </View>
