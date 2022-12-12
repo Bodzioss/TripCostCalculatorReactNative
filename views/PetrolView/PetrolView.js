@@ -4,6 +4,7 @@ import * as Location from 'expo-location';
 import { Button } from 'react-native-paper';
 import { useEffect, useState } from 'react';
 import Address from '../../classes/Address';
+import {Image} from 'react-native' ; 
 
 function PetrolView() {
   const [userLocation, setUserLocation] = useState(null);
@@ -71,6 +72,24 @@ function PetrolView() {
             <Text>{loading ? 'Ładowanie...' : userLocation?.toString()}</Text>
           </View>
 
+          <View style={styles.stationCard}>
+            <Text style={styles.whiteBoldMargin}>Legenda:</Text>
+              <View style={styles.stationData}>
+                <View style={styles.stationGas}>
+                  <Image source={require('../../assets/icons/lpg1.png')} />
+                  <Text style={styles.white}> - występuje obrót gazem płynnym LPG</Text>
+                </View>
+                <View style={styles.stationGas}>
+                  <Image source={require('../../assets/icons/oil.png')} />
+                  <Text style={styles.white}> - występuje obrót olejami napędowymi</Text>
+                </View>
+                <View style={styles.stationGas}>
+                  <Image source={require('../../assets/icons/pertol.png')} />
+                  <Text style={styles.white}> - występuje obrót benzynami silnikowymi</Text>
+                </View>
+              </View>
+           </View>
+
           {/* Petrol stations */}
           <View style={styles.card}>
             <Text style={styles.sectionHeader}>Stacje w okolicy:</Text>
@@ -80,7 +99,19 @@ function PetrolView() {
             ) : (
               petrolStations?.map((station, index) => (
                 <View key={index} style={styles.stationCard}>
-                  <Text style={styles.white}>{station.nazwa}</Text>
+                  <View style={styles.stationData}>
+                    <Text style={styles.whiteBold}>{station.nazwa}</Text>
+                    <Text style={styles.white}>{station.adres}</Text>
+                    <Text style={styles.white}>{station.miejscowosc}</Text>
+                  </View>
+                  <View style={styles.stationGas}>
+                    {station.gazPlynnyLPG == '1' &&
+                    <Image source={require('../../assets/icons/lpg1.png')} />}
+                    {station.olejeNapedowe == '1' &&
+                    <Image source={require('../../assets/icons/oil.png')}  />}
+                    {station.benzynySilnikowe == '1' &&
+                    <Image source={require('../../assets/icons/pertol.png')} />}
+                  </View>
                 </View>
               ))
             )}
@@ -117,14 +148,34 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   stationCard: {
+    textAlign: 'center',
+    alignItems: 'center',
     backgroundColor: COLORS.MAIN_BLUE,
-    padding: 15,
     borderRadius: 8,
     marginTop: 10,
     width: '100%',
   },
+  stationData: {
+    alignItems: 'center',
+    textAlign: 'center',
+    padding: 15,
+    width: '100%',
+  },
+  whiteBoldMargin: {
+    color: 'white',
+    fontWeight: 'bold',
+    marginTop: 15,
+  },
+  whiteBold: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
   white: {
     color: 'white',
+  },
+  stationGas: {
+    flexDirection: 'row',
+    alignItems: 'center', //Centered vertically
   },
 });
 
