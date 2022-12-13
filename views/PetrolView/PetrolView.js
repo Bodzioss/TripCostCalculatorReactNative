@@ -1,10 +1,9 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { COLORS } from '../../constants/AppConstants';
 import * as Location from 'expo-location';
-import { Button } from 'react-native-paper';
 import { useEffect, useState } from 'react';
 import Address from '../../classes/Address';
-import {Image} from 'react-native' ; 
+import { Image } from 'react-native';
 
 function PetrolView() {
   const [userLocation, setUserLocation] = useState(null);
@@ -72,27 +71,57 @@ function PetrolView() {
             <Text>{loading ? 'Ładowanie...' : userLocation?.toString()}</Text>
           </View>
 
-          <View style={styles.stationCard}>
+          <View
+            style={{
+              ...styles.stationCard,
+              paddingVertical: 8,
+            }}
+          >
             <Text style={styles.whiteBoldMargin}>Legenda:</Text>
-              <View style={styles.stationData}>
-                <View style={styles.stationGas}>
-                  <Image source={require('../../assets/icons/lpg1.png')} />
-                  <Text style={styles.white}> - występuje obrót gazem płynnym LPG</Text>
-                </View>
-                <View style={styles.stationGas}>
-                  <Image source={require('../../assets/icons/oil.png')} />
-                  <Text style={styles.white}> - występuje obrót olejami napędowymi</Text>
-                </View>
-                <View style={styles.stationGas}>
-                  <Image source={require('../../assets/icons/pertol.png')} />
-                  <Text style={styles.white}> - występuje obrót benzynami silnikowymi</Text>
-                </View>
+            <View style={{ ...styles.stationData, paddingLeft: 0 }}>
+              <View style={{ ...styles.stationGas, marginBottom: 4 }}>
+                <Image
+                  style={{ width: 64, height: 64 }}
+                  source={require('../../assets/icons/lpg1.png')}
+                />
+                <Text style={styles.white}>
+                  - występuje obrót gazem płynnym LPG
+                </Text>
               </View>
-           </View>
+              <View style={styles.stationGas}>
+                <Image
+                  style={{
+                    width: 50,
+                    height: 50,
+                    marginLeft: 8,
+                    marginRight: 8,
+                  }}
+                  source={require('../../assets/icons/oil.png')}
+                />
+                <Text style={styles.white}>
+                  - występuje obrót olejami napędowymi
+                </Text>
+              </View>
+              <View style={styles.stationGas}>
+                <Image
+                  style={{
+                    width: 44,
+                    height: 44,
+                    marginLeft: 28,
+                    marginRight: 12,
+                  }}
+                  source={require('../../assets/icons/pertol.png')}
+                />
+                <Text style={styles.white}>
+                  - występuje obrót benzynami silnikowymi
+                </Text>
+              </View>
+            </View>
+          </View>
 
           {/* Petrol stations */}
           <View style={styles.card}>
-            <Text style={styles.sectionHeader}>Stacje w okolicy:</Text>
+            <Text style={styles.sectionHeader}>Stacje paliw w okolicy:</Text>
             {/* List */}
             {stationsLoading ? (
               <Text>Ładowanie</Text>
@@ -101,16 +130,30 @@ function PetrolView() {
                 <View key={index} style={styles.stationCard}>
                   <View style={styles.stationData}>
                     <Text style={styles.whiteBold}>{station.nazwa}</Text>
-                    <Text style={styles.white}>{station.adres}</Text>
+                    <Text style={{ ...styles.white, marginTop: 8 }}>
+                      {station.adres}
+                    </Text>
                     <Text style={styles.white}>{station.miejscowosc}</Text>
                   </View>
                   <View style={styles.stationGas}>
-                    {station.gazPlynnyLPG == '1' &&
-                    <Image source={require('../../assets/icons/lpg1.png')} />}
-                    {station.olejeNapedowe == '1' &&
-                    <Image source={require('../../assets/icons/oil.png')}  />}
-                    {station.benzynySilnikowe == '1' &&
-                    <Image source={require('../../assets/icons/pertol.png')} />}
+                    {station.gazPlynnyLPG == '1' && (
+                      <Image
+                        style={{ width: 50, height: 50 }}
+                        source={require('../../assets/icons/lpg1.png')}
+                      />
+                    )}
+                    {station.olejeNapedowe == '1' && (
+                      <Image
+                        style={{ width: 40, height: 40 }}
+                        source={require('../../assets/icons/oil.png')}
+                      />
+                    )}
+                    {station.benzynySilnikowe == '1' && (
+                      <Image
+                        style={{ width: 36, height: 36, marginHorizontal: 8 }}
+                        source={require('../../assets/icons/pertol.png')}
+                      />
+                    )}
                   </View>
                 </View>
               ))
@@ -158,24 +201,28 @@ const styles = StyleSheet.create({
   stationData: {
     alignItems: 'center',
     textAlign: 'center',
-    padding: 15,
+    padding: 20,
+    paddingBottom: 10,
     width: '100%',
   },
   whiteBoldMargin: {
     color: 'white',
     fontWeight: 'bold',
-    marginTop: 15,
+    marginTop: 16,
   },
   whiteBold: {
     color: 'white',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   white: {
+    textAlign: 'center',
     color: 'white',
   },
   stationGas: {
+    marginBottom: 10,
     flexDirection: 'row',
-    alignItems: 'center', //Centered vertically
+    alignItems: 'center',
   },
 });
 
